@@ -1,0 +1,26 @@
+# Go build
+/bin/
+/*.exe
+/*.exe~
+/*.dll
+/*.so
+/*.dylib
+*.test
+*.out
+
+# IDEs
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Dependency management
+vendor/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# dotenv
+.env
