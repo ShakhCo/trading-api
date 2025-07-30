@@ -18,7 +18,6 @@ func RegisterUserHandler(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	// Parse body
 	var payload struct {
 		TelegramID int64  `json:"telegram_id"`
 		FirstName  string `json:"first"`
@@ -37,13 +36,24 @@ func RegisterUserHandler(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	// Check if user already exists
 	var existing models.User
 	tx := db.DB.First(&existing, "telegram_id = ?", payload.TelegramID)
 
 	if tx.Error == nil {
-		ctx.SetStatusCode(fasthttp.StatusConflict)
-		fmt.Fprintf(ctx, "User already exists.")
+		// Update existing user
+		existing.FirstName = payload.FirstName
+		if payload.LastName != "" {
+			existing.LastName = &payload.LastName
+		}
+
+		if err := db.DB.Save(&existing).Error; err != nil {
+			ctx.SetStatusCode(fasthttp.StatusInternalServerError)
+			fmt.Fprintf(ctx, "Failed to update user: %v", err)
+			return
+		}
+
+		ctx.SetStatusCode(fasthttp.StatusOK)
+		fmt.Fprintf(ctx, "✅ User updated!")
 		return
 	}
 

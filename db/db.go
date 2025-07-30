@@ -2,13 +2,11 @@ package db
 
 import (
 	"fmt"
-	"log"
-	"os"
-
-	"trading_api/models"
-
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"log"
+	"os"
+	"trading_api/models"
 )
 
 var DB *gorm.DB
