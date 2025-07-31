@@ -15,7 +15,6 @@ func hiHandler(ctx *fasthttp.RequestCtx) {
 }
 
 func main() {
-
 	db.InitDB()
 
 	r := router.New()
@@ -23,8 +22,12 @@ func main() {
 	r.GET("/hi", hiHandler)
 	r.POST("/register", routes.RegisterUserHandler)
 	r.GET("/users", routes.GetAllUsersHandler)
+	r.POST("/users/{telegram_id}/upload-photo/", routes.UploadPhotoHandler)
 
-	fmt.Println("FastHTTP server is running on :9000")
+	// Static file handler for uploaded files
+	r.ServeFiles("/uploads/{filepath:*}", "./uploads")
+
+	fmt.Println("✅ FastHTTP server is running on :9000")
 	if err := fasthttp.ListenAndServe(":9000", r.Handler); err != nil {
 		panic("Error starting server: " + err.Error())
 	}
