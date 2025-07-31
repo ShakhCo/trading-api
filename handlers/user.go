@@ -168,7 +168,7 @@ func UploadPhotoHandler(ctx *fasthttp.RequestCtx) {
 	}
 
 	// Return the download link
-	downloadURL := fmt.Sprintf("http://localhost:9000/uploads/%s", filename) // Adjust base URL if needed
+	downloadURL := fmt.Sprintf("/uploads/%s", filename) // Adjust base URL if needed
 
 	response := map[string]string{
 		"message":      "✅ Photo uploaded successfully!",
